@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DineFlow — Food, Elevated</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="main-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Dine<span>Flow</span></a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="#restaurants-section" id="restaurants-link">Restaurants</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="cart.html" class="nav-cart">
+          🛒&nbsp;Cart
+          <span class="cart-badge" id="cart-badge">0</span>
+        </a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-eyebrow">Premium Food Delivery</div>
+      <h1 class="hero-title">Great food,<br>beautifully delivered.</h1>
+      <p class="hero-subtitle">Discover curated restaurants with exceptional cuisine, delivered to your door with care.</p>
+
+      <div class="hero-search">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search restaurants, cuisines…" autocomplete="off">
+      </div>
+    </section>
+
+    <!-- FILTERS -->
+    <div class="filters-wrap">
+      <button class="filter-btn active" data-cuisine="all">All</button>
+      <button class="filter-btn" data-cuisine="Japanese">🍣 Japanese</button>
+      <button class="filter-btn" data-cuisine="Italian">🍕 Italian</button>
+      <button class="filter-btn" data-cuisine="French">🥐 French</button>
+      <button class="filter-btn" data-cuisine="Indian">🍛 Indian</button>
+      <button class="filter-btn" data-cuisine="American">🍔 American</button>
+      <button class="filter-btn" data-cuisine="Healthy">🥗 Healthy</button>
+    </div>
+
+    <!-- RESTAURANT GRID -->
+    <section class="section" id="restaurants-section">
+      <div class="section-header">
+        <h2 class="section-title">Restaurants near you</h2>
+        <span class="section-count" id="restaurant-count">6 restaurants</span>
+      </div>
+      <div class="row g-4" id="restaurant-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2024 DineFlow. Crafted with care. &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+    // Mobile nav toggle
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      document.getElementById('nav-links').classList.toggle('mobile-open');
+    });
+    // Update restaurant count on filter/search
+    const origRender = renderRestaurants;
+    window.renderRestaurants = function(data) {
+      origRender(data);
+      const el = document.getElementById('restaurant-count');
+      if (el) el.textContent = `${data.length} restaurant${data.length !== 1 ? 's' : ''}`;
+    };
+    renderRestaurants(restaurants);
+  </script>
+
+</body>
+</html>

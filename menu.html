@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — DineFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="main-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Dine<span>Flow</span></a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#restaurants-section">Restaurants</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="cart.html" class="nav-cart">
+          🛒&nbsp;Cart
+          <span class="cart-badge" id="cart-badge">0</span>
+        </a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- RESTAURANT HERO -->
+    <section class="menu-hero">
+      <div class="menu-hero-inner">
+        <div>
+          <a href="index.html" class="back-link">← Back to Restaurants</a>
+          <h1 class="restaurant-hero-name" id="restaurant-hero-name">Loading…</h1>
+          <p class="restaurant-hero-cuisine" id="restaurant-hero-cuisine"></p>
+          <div class="hero-meta-row">
+            <div class="hero-meta-badge">
+              <span>⭐</span>
+              <span id="restaurant-hero-rating">—</span>
+            </div>
+            <div class="hero-meta-badge">
+              <span>🕐</span>
+              <span id="restaurant-hero-delivery">—</span>
+            </div>
+            <div class="hero-meta-badge">
+              <span>🚚</span>
+              <span id="restaurant-hero-fee">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="menu-hero-img">
+          <img id="restaurant-hero-img" src="" alt="Restaurant">
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU GRID -->
+    <section class="menu-section">
+      <div class="section-header">
+        <h2 class="section-title">Our Menu</h2>
+      </div>
+      <div class="row g-4" id="menu-container">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- VIEW CART BAR -->
+    <div id="cart-bar" style="display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:100;">
+      <a href="cart.html" class="btn-apple btn-dark" id="view-cart-btn">
+        🛒 View Cart · <span id="cart-bar-total">$0.00</span>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2024 DineFlow. Crafted with care.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      document.getElementById('nav-links').classList.toggle('mobile-open');
+    });
+
+    // Floating cart bar
+    function updateCartBar() {
+      const bar = document.getElementById('cart-bar');
+      const count = Cart.getCount();
+      if (count > 0) {
+        bar.style.display = 'block';
+        document.getElementById('cart-bar-total').textContent = formatPrice(Cart.getTotal());
+      } else {
+        bar.style.display = 'none';
+      }
+    }
+
+    // Override Cart.save to also update bar
+    const origSave = Cart.save.bind(Cart);
+    Cart.save = function(cart) {
+      origSave(cart);
+      updateCartBar();
+    };
+
+    updateCartBar();
+  </script>
+
+</body>
+</html>
